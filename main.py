@@ -56,8 +56,16 @@ while run:
 
     # when game is running
     if display and not game_over:
-        screen.blit(ball.image, ball.rect)
+        pygame.draw.ellipse(screen, (255, 255, 255), ball.rect)
+        # move the ball by adding the delta to its x and y position
+        delta = 0.3
+        ball.x = ball.x + delta
+        ball.y = ball.y + delta
+        ball.move()
 
+        # if the ball hits the wall, make it bounce by inverting the x and y values
+        # if ball.x == 900:
+        #     ball.x = ball.x * -1
 
     pygame.display.update()
 

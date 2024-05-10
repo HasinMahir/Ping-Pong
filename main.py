@@ -11,7 +11,8 @@ pygame.display.set_caption("Pong")
 # set up variables
 size = (900, 650)
 screen = pygame.display.set_mode(size)
-ball = Ball(50, 50)
+# (870, 620)
+ball = Ball(430, 300)
 
 # the loop will carry on until the user exits the game
 run = True
@@ -58,14 +59,17 @@ while run:
     if display and not game_over:
         pygame.draw.ellipse(screen, (255, 255, 255), ball.rect)
         # move the ball by adding the delta to its x and y position
-        delta = 0.3
-        ball.x = ball.x + delta
-        ball.y = ball.y + delta
+        x_delta = 0.3
+        y_delta = 0.3
+        # ball.x = ball.x + x_delta
+        ball.y = ball.y + y_delta
         ball.move()
 
-        # if the ball hits the wall, make it bounce by inverting the x and y values
-        # if ball.x == 900:
-        #     ball.x = ball.x * -1
+        # if the ball hits the wall, make it bounce by inverting the x and y deltas
+        # if ball.x >= 870:
+        #     x_delta = x_delta * -1
+        if ball.y >= 620:
+            y_delta = y_delta * -1
 
     pygame.display.update()
 

@@ -15,6 +15,7 @@ screen = pygame.display.set_mode(size)
 ball = Ball(430, 300)
 player1 = Player(0, 250)
 player2 = Player(889, 250)
+bg = pygame.image.load("line.png")
 x_delta = 0.3
 y_delta = 0.3
 player1_score = 0
@@ -39,6 +40,7 @@ while run:
                 counter = counter + 1
 
     screen.fill((0, 0, 0))
+    # screen.blit(bg, (0, 0))
 
     # title screen
     if not display and not game_over:
@@ -70,7 +72,6 @@ while run:
         ball.move()
         screen.blit(player1.image, player1.rect)
         screen.blit(player2.image, player2.rect)
-
         # if the ball hits the wall, make it bounce by inverting the x and y deltas
         if ball.x >= 870:
             x_delta = x_delta * -1

@@ -16,8 +16,8 @@ ball = Ball(430, 300)
 player1 = Player(0, 250)
 player2 = Player(889, 250)
 bg = pygame.image.load("line.png")
-x_delta = 0.3
-y_delta = 0.3
+x_delta = 2
+y_delta = 2
 player1_score = 0
 player2_score = 0
 
@@ -39,8 +39,9 @@ while run:
                 display = True
                 counter = counter + 1
 
-    screen.fill((0, 0, 0))
-    # screen.blit(bg, (0, 0))
+    # background
+    # screen.fill((0, 0, 0))
+    screen.blit(bg, (0, 0))
 
     # title screen
     if not display and not game_over:

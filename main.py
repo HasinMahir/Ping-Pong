@@ -7,6 +7,7 @@ pygame.init()
 pygame.font.init()
 my_font = pygame.font.SysFont('Arial', 30)
 title_font = pygame.font.SysFont("Arial", 100)
+score_font = pygame.font.SysFont("Times New Roman", 100)
 pygame.display.set_caption("Pong")
 
 # set up variables
@@ -16,16 +17,21 @@ ball = Ball(430, 300)
 player1 = Player(0, 250)
 player2 = Player(889, 250)
 bg = pygame.image.load("line.png")
+# game numbers
 x_delta = 2
 y_delta = 2
 player1_score = 0
 player2_score = 0
+display_player1_score = score_font.render(str(player1_score), True, (255, 50, 100))
+display_player2_score = score_font.render(str(player2_score), True, (50, 100, 255))
 
 # the loop will carry on until the user exits the game
 run = True
 game_over = False
 display = False
 counter = 0
+player1_win = False
+player2_win = False
 
 # -------- Main Program Loop -----------
 while run:
@@ -40,8 +46,8 @@ while run:
                 counter = counter + 1
 
     # background
-    # screen.fill((0, 0, 0))
-    screen.blit(bg, (0, 0))
+    screen.fill((0, 0, 0))
+    # screen.blit(bg, (0, 0))
 
     # title screen
     if not display and not game_over:
@@ -57,8 +63,8 @@ while run:
         display_instruction_3 = my_font.render(instructions_3, True, (255, 255, 255))
         display_instruction_4 = my_font.render(instructions_4, True, (255, 255, 255))
         display_instruction_5 = my_font.render(instructions_5, True, (255, 255, 255))
-        screen.blit(display_instruction_1, (335, 0))
-        screen.blit(display_instruction_1_cont, (435, 0))
+        screen.blit(display_instruction_1, (350, 0))
+        screen.blit(display_instruction_1_cont, (450, 0))
         screen.blit(display_instruction_2, (250, 200))
         screen.blit(display_instruction_3, (250, 250))
         screen.blit(display_instruction_4, (250, 300))
@@ -66,6 +72,7 @@ while run:
 
     # when game is running
     if display and not game_over:
+        screen.blit(bg, (0, 0))
         pygame.draw.ellipse(screen, (255, 255, 255), ball.rect)
         # move the ball by adding the delta to its x and y position
         ball.x = ball.x + x_delta
@@ -80,6 +87,7 @@ while run:
             ball.x = 430
             ball.y = 300
             player1_score = player1_score + 1
+            display_player1_score = score_font.render(str(player1_score), True, (255, 50, 100))
 
         if ball.x <= 0:
             x_delta = x_delta * -1
@@ -87,6 +95,7 @@ while run:
             ball.x = 430
             ball.y = 300
             player2_score = player2_score + 1
+            display_player2_score = score_font.render(str(player2_score), True, (50, 100, 255))
 
         if ball.y >= 620 or ball.y <= 0:
             y_delta = y_delta * -1
@@ -105,6 +114,23 @@ while run:
         # if the ball collides with the player, make it bounce
         if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
             x_delta = x_delta * -1
+
+        # first to 7 points wins
+        if player1_score == 2:
+            game_over = True
+            player1_win = True
+        if player2_score == 2:
+            game_over = True
+            player2_win = True
+
+        # final screen
+        if game_over:
+            screen.fill((0, 0, 0))
+
+
+        # point system
+        screen.blit(display_player1_score, (300, 0))
+        screen.blit(display_player2_score, (550, 0))
 
     pygame.display.update()
 

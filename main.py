@@ -8,6 +8,7 @@ pygame.font.init()
 my_font = pygame.font.SysFont('Arial', 30)
 title_font = pygame.font.SysFont("Arial", 100)
 score_font = pygame.font.SysFont("Times New Roman", 100)
+win_font = pygame.font.SysFont("Arial", 50)
 pygame.display.set_caption("Pong")
 
 # set up variables
@@ -22,8 +23,8 @@ x_delta = 2
 y_delta = 2
 player1_score = 0
 player2_score = 0
-display_player1_score = score_font.render(str(player1_score), True, (255, 50, 100))
-display_player2_score = score_font.render(str(player2_score), True, (50, 100, 255))
+display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
+display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
 
 # the loop will carry on until the user exits the game
 run = True
@@ -47,7 +48,6 @@ while run:
 
     # background
     screen.fill((0, 0, 0))
-    # screen.blit(bg, (0, 0))
 
     # title screen
     if not display and not game_over:
@@ -57,8 +57,8 @@ while run:
         instructions_3 = "Use the up and down arrow keys for Player 2"
         instructions_4 = "First to 7 points wins!"
         instructions_5 = "Click anywhere on the screen to begin!"
-        display_instruction_1 = title_font.render(instructions_1, True, (255, 50, 100))
-        display_instruction_1_cont = title_font.render(instructions_1_cont, True, (50, 100, 255))
+        display_instruction_1 = title_font.render(instructions_1, True, (50, 100, 255))
+        display_instruction_1_cont = title_font.render(instructions_1_cont, True, (255, 50, 100))
         display_instruction_2 = my_font.render(instructions_2, True, (255, 255, 255))
         display_instruction_3 = my_font.render(instructions_3, True, (255, 255, 255))
         display_instruction_4 = my_font.render(instructions_4, True, (255, 255, 255))
@@ -115,22 +115,29 @@ while run:
         if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
             x_delta = x_delta * -1
 
-        # first to 7 points wins
-        if player1_score == 2:
-            game_over = True
-            player1_win = True
-        if player2_score == 2:
-            game_over = True
-            player2_win = True
-
-        # final screen
-        if game_over:
-            screen.fill((0, 0, 0))
-
-
         # point system
         screen.blit(display_player1_score, (300, 0))
         screen.blit(display_player2_score, (550, 0))
+
+        # first to 7 points wins
+        if player1_score == 7:
+            game_over = True
+            player1_win = True
+        if player2_score == 7:
+            game_over = True
+            player2_win = True
+
+    # final screen
+    if game_over:
+        screen.fill((0, 0, 0))
+    if game_over and player1_win:
+        p1_win_message = "Player 1 wins!"
+        display_p1_win_message = win_font.render(p1_win_message, True, (255, 255, 255))
+        screen.blit(display_p1_win_message, (325, 275))
+    if game_over and player2_win:
+        p2_win_message = "Player 2 wins!"
+        display_p2_win_message = win_font.render(p2_win_message, True, (255, 255, 255))
+        screen.blit(display_p2_win_message, (325, 275))
 
     pygame.display.update()
 

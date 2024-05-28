@@ -45,6 +45,21 @@ while run:
             if event.button == 1 and counter == 0:
                 display = True
                 counter = counter + 1
+        # play again
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and game_over:
+                # reset variables
+                game_over = False
+                display = False
+                player1_win = False
+                player2_win = False
+                counter = 0
+                x_delta = 2
+                y_delta = 2
+                player1_score = 0
+                player2_score = 0
+                display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
+                display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
 
     # background
     screen.fill((0, 0, 0))
@@ -87,7 +102,7 @@ while run:
             ball.x = 430
             ball.y = 300
             player1_score = player1_score + 1
-            display_player1_score = score_font.render(str(player1_score), True, (255, 50, 100))
+            display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
 
         if ball.x <= 0:
             x_delta = x_delta * -1
@@ -95,7 +110,7 @@ while run:
             ball.x = 430
             ball.y = 300
             player2_score = player2_score + 1
-            display_player2_score = score_font.render(str(player2_score), True, (50, 100, 255))
+            display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
 
         if ball.y >= 620 or ball.y <= 0:
             y_delta = y_delta * -1
@@ -130,14 +145,18 @@ while run:
     # final screen
     if game_over:
         screen.fill((0, 0, 0))
-    if game_over and player1_win:
-        p1_win_message = "Player 1 wins!"
-        display_p1_win_message = win_font.render(p1_win_message, True, (255, 255, 255))
-        screen.blit(display_p1_win_message, (325, 275))
-    if game_over and player2_win:
-        p2_win_message = "Player 2 wins!"
-        display_p2_win_message = win_font.render(p2_win_message, True, (255, 255, 255))
-        screen.blit(display_p2_win_message, (325, 275))
+        if player1_win:
+            p1_win_message = "Player 1 wins!"
+            display_p1_win_message = win_font.render(p1_win_message, True, (50, 100, 255))
+            screen.blit(display_p1_win_message, (325, 275))
+        if player2_win:
+            p2_win_message = "Player 2 wins!"
+            display_p2_win_message = win_font.render(p2_win_message, True, (255, 50, 100))
+            screen.blit(display_p2_win_message, (325, 275))
+        # press space to play again
+        play_again_message = "Press SPACE to play again!"
+        display_play_again_message = my_font.render(play_again_message, True, (255, 255, 255))
+        screen.blit(display_play_again_message, (300, 350))
 
     pygame.display.update()
 

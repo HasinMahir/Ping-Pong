@@ -19,8 +19,8 @@ player1 = Player(0, 250)
 player2 = Player(889, 250)
 bg = pygame.image.load("line.png")
 # game numbers
-x_delta = 2
-y_delta = 2
+# x_delta = 2
+# y_delta = 2
 player1_score = 0
 player2_score = 0
 display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
@@ -30,6 +30,7 @@ display_player2_score = score_font.render(str(player2_score), True, (255, 50, 10
 run = True
 game_over = False
 display = False
+choose_speed = False
 counter = 0
 player1_win = False
 player2_win = False
@@ -40,11 +41,19 @@ while run:
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT:  # If user clicked close
             run = False
-        # start the game by clicking off the title screen
+        # start the game by clicking on one of the difficulty options
         if event.type == pygame.MOUSEBUTTONUP:
+            # check which option the user chooses
+            # FIX THIS
             if event.button == 1 and counter == 0:
-                display = True
-                counter = counter + 1
+                position = pygame.mouse.get_pos()
+                if easy_speed.rect.collidepoint(position):
+                    display = True
+                    x_delta = 1
+                    y_delta = 1
+
+                # display = True
+                # counter = counter + 1
         # play again
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and game_over:
@@ -54,8 +63,8 @@ while run:
                 player1_win = False
                 player2_win = False
                 counter = 0
-                x_delta = 2
-                y_delta = 2
+                # x_delta = 2
+                # y_delta = 2
                 player1_score = 0
                 player2_score = 0
                 display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
@@ -71,7 +80,7 @@ while run:
         instructions_2 = "Use the W and S keys for Player 1"
         instructions_3 = "Use the up and down arrow keys for Player 2"
         instructions_4 = "First to 7 points wins!"
-        instructions_5 = "Click anywhere on the screen to begin!"
+        instructions_5 = "Choose one of the difficulty options for the ball speed to begin!"
         display_instruction_1 = title_font.render(instructions_1, True, (50, 100, 255))
         display_instruction_1_cont = title_font.render(instructions_1_cont, True, (255, 50, 100))
         display_instruction_2 = my_font.render(instructions_2, True, (255, 255, 255))
@@ -80,13 +89,25 @@ while run:
         display_instruction_5 = my_font.render(instructions_5, True, (255, 255, 255))
         screen.blit(display_instruction_1, (350, 0))
         screen.blit(display_instruction_1_cont, (450, 0))
-        screen.blit(display_instruction_2, (250, 200))
-        screen.blit(display_instruction_3, (250, 250))
-        screen.blit(display_instruction_4, (250, 300))
-        screen.blit(display_instruction_5, (250, 350))
+        screen.blit(display_instruction_2, (170, 200))
+        screen.blit(display_instruction_3, (170, 250))
+        screen.blit(display_instruction_4, (170, 300))
+        screen.blit(display_instruction_5, (170, 350))
+
+    # choose the speed of the ball
+    if not display and not choose_speed and not game_over:
+        easy_speed = "EASY"
+        display_easy_speed = my_font.render(easy_speed, True, (0, 255, 0))
+        medium_speed = "MEDIUM"
+        display_medium_speed = my_font.render(medium_speed, True, (0, 0, 255))
+        hard_speed = "HARD"
+        display_hard_speed = my_font.render(hard_speed, True, (255, 0, 0))
+        screen.blit(display_easy_speed, (225, 500))
+        screen.blit(display_medium_speed, (425, 500))
+        screen.blit(display_hard_speed, (625, 500))
 
     # when game is running
-    if display and not game_over:
+    if display and choose_speed and not game_over:
         screen.blit(bg, (0, 0))
         pygame.draw.ellipse(screen, (255, 255, 255), ball.rect)
         # move the ball by adding the delta to its x and y position

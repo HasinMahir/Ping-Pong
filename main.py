@@ -19,12 +19,23 @@ player1 = Player(0, 250)
 player2 = Player(889, 250)
 bg = pygame.image.load("line.png")
 # game numbers
-# x_delta = 2
-# y_delta = 2
+x_delta = ""
+y_delta = ""
 player1_score = 0
 player2_score = 0
 display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
 display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
+
+# displaying ball speed options
+easy_speed = "EASY"
+display_easy_speed = my_font.render(easy_speed, True, (0, 255, 0))
+medium_speed = "MEDIUM"
+display_medium_speed = my_font.render(medium_speed, True, (0, 0, 255))
+hard_speed = "HARD"
+display_hard_speed = my_font.render(hard_speed, True, (255, 0, 0))
+display_easy_speed_rect = pygame.Rect(225, 500, display_easy_speed.get_rect().width, display_easy_speed.get_rect().height)
+display_medium_speed_rect = pygame.Rect(425, 500, display_medium_speed.get_rect().width, display_medium_speed.get_rect().height)
+display_hard_speed_rect = pygame.Rect(625, 500, display_hard_speed.get_rect().width, display_hard_speed.get_rect().height)
 
 # the loop will carry on until the user exits the game
 run = True
@@ -41,19 +52,34 @@ while run:
     for event in pygame.event.get():  # User did something
         if event.type == pygame.QUIT:  # If user clicked close
             run = False
+
         # start the game by clicking on one of the difficulty options
         if event.type == pygame.MOUSEBUTTONUP:
             # check which option the user chooses
-            # FIX THIS
             if event.button == 1 and counter == 0:
                 position = pygame.mouse.get_pos()
-                if easy_speed.rect.collidepoint(position):
+                # easy speed option
+                if display_easy_speed_rect.collidepoint(position):
                     display = True
+                    choose_speed = True
+                    counter = counter + 1
                     x_delta = 1
                     y_delta = 1
+                # medium speed option
+                if display_medium_speed_rect.collidepoint(position):
+                    display = True
+                    choose_speed = True
+                    counter = counter + 1
+                    x_delta = 2
+                    y_delta = 2
+                # hard speed option
+                if display_hard_speed_rect.collidepoint(position):
+                    display = True
+                    choose_speed = True
+                    counter = counter + 1
+                    x_delta = 3
+                    y_delta = 3
 
-                # display = True
-                # counter = counter + 1
         # play again
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE and game_over:
@@ -63,12 +89,14 @@ while run:
                 player1_win = False
                 player2_win = False
                 counter = 0
-                # x_delta = 2
-                # y_delta = 2
                 player1_score = 0
                 player2_score = 0
                 display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
                 display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
+                # FIX PLAY AGAIN SCREEN
+                screen.blit(display_easy_speed, (225, 500))
+                screen.blit(display_medium_speed, (425, 500))
+                screen.blit(display_hard_speed, (625, 500))
 
     # background
     screen.fill((0, 0, 0))
@@ -96,12 +124,6 @@ while run:
 
     # choose the speed of the ball
     if not display and not choose_speed and not game_over:
-        easy_speed = "EASY"
-        display_easy_speed = my_font.render(easy_speed, True, (0, 255, 0))
-        medium_speed = "MEDIUM"
-        display_medium_speed = my_font.render(medium_speed, True, (0, 0, 255))
-        hard_speed = "HARD"
-        display_hard_speed = my_font.render(hard_speed, True, (255, 0, 0))
         screen.blit(display_easy_speed, (225, 500))
         screen.blit(display_medium_speed, (425, 500))
         screen.blit(display_hard_speed, (625, 500))

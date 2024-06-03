@@ -63,8 +63,8 @@ while run:
                     display = True
                     choose_speed = True
                     counter = counter + 1
-                    x_delta = 1
-                    y_delta = 1
+                    x_delta = 1.25
+                    y_delta = 1.25
                 # medium speed option
                 if display_medium_speed_rect.collidepoint(position):
                     display = True
@@ -86,6 +86,7 @@ while run:
                 # reset variables
                 game_over = False
                 display = False
+                choose_speed = False
                 player1_win = False
                 player2_win = False
                 counter = 0
@@ -93,10 +94,6 @@ while run:
                 player2_score = 0
                 display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
                 display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
-                # FIX PLAY AGAIN SCREEN
-                screen.blit(display_easy_speed, (225, 500))
-                screen.blit(display_medium_speed, (425, 500))
-                screen.blit(display_hard_speed, (625, 500))
 
     # background
     screen.fill((0, 0, 0))
@@ -128,25 +125,27 @@ while run:
         screen.blit(display_medium_speed, (425, 500))
         screen.blit(display_hard_speed, (625, 500))
 
-    # when game is running
+    # when the game is running
     if display and choose_speed and not game_over:
         screen.blit(bg, (0, 0))
         pygame.draw.ellipse(screen, (255, 255, 255), ball.rect)
-        # move the ball by adding the delta to its x and y position
+
+        # move the ball by adding the delta value to its x and y position
         ball.x = ball.x + x_delta
         ball.y = ball.y + y_delta
         ball.move()
         screen.blit(player1.image, player1.rect)
         screen.blit(player2.image, player2.rect)
-        # if the ball hits the wall, make it bounce by inverting the x and y deltas
+
+        # player 1 scores a point
         if ball.x >= 870:
             x_delta = x_delta * -1
-            # set the ball back to the middle of the screen
+            # set the ball back to the middle of the screen after a player scores
             ball.x = 430
             ball.y = 300
             player1_score = player1_score + 1
             display_player1_score = score_font.render(str(player1_score), True, (50, 100, 255))
-
+        # player 2 scores a point
         if ball.x <= 0:
             x_delta = x_delta * -1
             # set the ball back to the middle of the screen
@@ -154,7 +153,7 @@ while run:
             ball.y = 300
             player2_score = player2_score + 1
             display_player2_score = score_font.render(str(player2_score), True, (255, 50, 100))
-
+        # if the ball hits the wall, make it bounce by inverting the y delta
         if ball.y >= 620 or ball.y <= 0:
             y_delta = y_delta * -1
 
